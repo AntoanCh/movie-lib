@@ -1,18 +1,13 @@
-import { Navigate } from 'react-router-dom'
-import Button from '@material-ui/core/Button'
-import { useNavigate } from 'react-router-dom'
+import Heading from "../components/Heading";
+import Favorites from "../components/Favorites";
 
 const Home = () => {
-	const navigate = useNavigate()
+  return (
+    <div>
+      <Heading />
+      <Favorites />
+    </div>
+  );
+};
 
-	const goHome = () => {
-		navigate('/search')
-	}
-	return (
-		<div>
-			<Button onClick={goHome}>GO HOME</Button>
-		</div>
-	)
-}
-
-export default Home
+export default Home;
