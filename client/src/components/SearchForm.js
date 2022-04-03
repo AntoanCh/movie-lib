@@ -6,6 +6,16 @@ import axios from "axios";
 // import { store } from '../app/store'
 // import { changeInput } from '../features/search/searchSlice'
 // import { useDispatch } from 'react-redux'
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles({
+  root: {
+    background: "white",
+    margin: "10px",
+    width: "15em",
+  },
+  margin: "10px",
+});
 
 const SearchForm = ({ input, setInput, fetchedData, setFetchedData }) => {
   const handleInput = (e) => {
@@ -31,17 +41,19 @@ const SearchForm = ({ input, setInput, fetchedData, setFetchedData }) => {
   const location = useLocation();
   // const dispatch = useDispatch()
 
+  const classes = useStyles();
   return (
     <div>
       <form className="search" onSubmit={handleSubmit}>
         <TextField
           id="search"
-          label="Search Movies"
+          label="Search by movie title..."
           type="search"
           variant="outlined"
           margin="dense"
           value={input}
           onChange={handleInput}
+          className={classes.root}
         />
         <Button variant="outlined" color="primary" size="large" type="submit">
           Search
