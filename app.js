@@ -10,6 +10,9 @@ const usersRouter = require("./routes/usersRoute");
 const favoritesRouter = require("./routes/favoritesRoute");
 const ratingsRouter = require("./routes/ratingsRoute");
 const notesRouter = require("./routes/notesRoute");
+const connectDB = require("./config/db");
+
+connectDB();
 
 const app = express();
 
