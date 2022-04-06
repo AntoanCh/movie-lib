@@ -5,6 +5,7 @@ const favoriteSchema = mongoose.Schema(
     name: {
       type: String,
       required: [true, "Please add a name"],
+      unique: [true, "Favorite already exists"],
     },
   },
   {
@@ -12,4 +13,7 @@ const favoriteSchema = mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Favorite", favoriteSchema);
+module.exports = mongoose.model(
+  "Favorite",
+  favoriteSchema
+);

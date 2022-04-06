@@ -1,5 +1,6 @@
 import Button from "@material-ui/core/Button";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Movie = ({
   image,
@@ -11,6 +12,12 @@ const Movie = ({
   premiered,
   clickable,
 }) => {
+  const [favorite, setFavorite] = useState(false);
+  const toggleFavorite = async () => {
+    // await axios.post("");
+    setFavorite(!favorite);
+  };
+
   const navigate = useNavigate();
   const openDetails = () => {
     if (clickable) {
@@ -22,11 +29,22 @@ const Movie = ({
   }
   return (
     <div className="movie">
-      <div className={clickable ? "image pointer" : "image"}>
-        <img src={image} onClick={openDetails} alt="movie cover" />
+      <div
+        className={
+          clickable ? "image pointer" : "image"
+        }
+      >
+        <img
+          src={image}
+          onClick={openDetails}
+          alt="movie cover"
+        />
       </div>
       <div className="movieData">
-        <h2 onClick={openDetails} className={clickable ? "pointer" : ""}>
+        <h2
+          onClick={openDetails}
+          className={clickable ? "pointer" : ""}
+        >
           {name}({premiered})
         </h2>
         <p>
@@ -36,8 +54,17 @@ const Movie = ({
         <a href={site}>View official site</a>
         <br />
         <div className="favBtn ">
-          <Button size="large" color="primary" variant="outlined">
-            Favorites
+          <Button
+            size="large"
+            onClick={toggleFavorite}
+            color={
+              favorite ? "secondary" : "primary"
+            }
+            variant="outlined"
+          >
+            {favorite
+              ? "Remove from favorites"
+              : "Add to favorites"}
           </Button>
         </div>
       </div>
