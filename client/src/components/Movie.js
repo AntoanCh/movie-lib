@@ -1,6 +1,7 @@
 import Button from "@material-ui/core/Button";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const Movie = ({
   image,
@@ -12,11 +13,42 @@ const Movie = ({
   premiered,
   clickable,
 }) => {
-  const [favorite, setFavorite] = useState(false);
+  const [data, setData] = useState();
+  const [favorite, setFavorite] = useState();
+
   const toggleFavorite = async () => {
-    // await axios.post("");
-    setFavorite(!favorite);
+    if (!favorite) {
+      const newFavorite = await axios.post(
+        "/api/favorites",
+        {
+          name,
+          image,
+        }
+      );
+      setFavorite(newFavorite.data.name);
+    } else {
+      const deleted = await axios.delete(
+        `/api/favorites/${name}`
+      );
+      // console.log(deleted.name);
+      setFavorite("");
+    }
   };
+
+  // console.log(favorite);
+
+  const fetchData = async () => {
+    const fetchedData = await axios.get(
+      `/api/favorites/${name}`
+    );
+    setFavorite(fetchedData.data[0]);
+  };
+  useEffect(() => {
+    if (favorite === undefined) {
+      fetchData();
+    }
+    // console.log(favorite);
+  });
 
   const navigate = useNavigate();
   const openDetails = () => {
@@ -71,5 +103,4 @@ const Movie = ({
     </div>
   );
 };
-
 export default Movie;

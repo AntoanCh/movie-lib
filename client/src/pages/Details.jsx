@@ -9,29 +9,89 @@ import Movie from "../components/Movie";
 
 const Details = ({ fetchedData }) => {
   const [movie, setMovie] = useState();
-  const [rating, setRating] = useState(1);
+  const [rating, setRating] = useState(0);
+  const [note, setNote] = useState("");
 
+  //Movie
   const fetchMovie = async () => {
     const { data } = await axios.get(
       `https://api.tvmaze.com/singlesearch/shows?q=${params.movieName}`
     );
     setMovie(data);
   };
-
   useEffect(() => {
     if (!movie) {
       fetchMovie();
     }
   }, []);
-  console.log(movie);
+
   const params = useParams();
 
+  //Notes
+  const fetchNote = async () => {
+    const { data } = await axios.get(
+      `/api/notes/${params.movieName}`
+    );
+    if (!data[0]) {
+      setNote("");
+    } else {
+      setNote(data[0].note);
+    }
+  };
+  useEffect(() => {
+    if (!note) {
+      fetchNote();
+    }
+  }, []);
+  const handleChange = (e) => {
+    setNote(e.target.value);
+  };
+  const noteChange = async () => {
+    await axios.put(
+      `/api/notes/${params.movieName}`,
+      {
+        note: note,
+      }
+    );
+  };
+
+  //Rating
+  const fetchRating = async () => {
+    const { data } = await axios.get(
+      `/api/ratings/${params.movieName}`
+    );
+    if (!data[0]) {
+      setRating(0);
+    } else {
+      setRating(data[0].rating);
+    }
+  };
+  useEffect(() => {
+    if (rating === 0) {
+      fetchRating();
+    }
+  }, []);
+
+  const ratingChange = async (
+    event,
+    newValue
+  ) => {
+    await axios.put(
+      `/api/ratings/${movie.name}`,
+      { rating: newValue }
+    );
+    setRating(newValue);
+  };
   return (
     <>
       {movie ? (
         <Movie
           clickable={false}
-          image={movie.image ? movie.image.medium : defaultImg}
+          image={
+            movie.image
+              ? movie.image.medium
+              : defaultImg
+          }
           name={movie.name}
           genres={movie.genres}
           runtime={movie.averageRuntime}
@@ -50,9 +110,7 @@ const Details = ({ fetchedData }) => {
           name="simple-controlled"
           value={rating}
           size="large"
-          onChange={(event, newValue) => {
-            setRating(newValue);
-          }}
+          onChange={ratingChange}
         />
       </div>
       <div className="notes">
@@ -60,9 +118,12 @@ const Details = ({ fetchedData }) => {
           id="Note"
           label="Your private notes and comments for movie"
           multiline
-          rows={5}
+          minRows={5}
           variant="outlined"
           fullWidth
+          value={note}
+          onChange={handleChange}
+          onBlur={noteChange}
         />
       </div>
     </>

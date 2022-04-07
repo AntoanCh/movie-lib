@@ -18,48 +18,43 @@ const setFavorite = asyncHandler(
     }
     const favorite = await Favorite.create({
       name: req.body.name,
+      image: req.body.image,
     });
     res.status(200).json(favorite);
   }
 );
-// PUT favorites
-const updateFavorite = asyncHandler(
+// GET one favorite
+const getOneFavorite = asyncHandler(
   async (req, res) => {
-    const favorite = await Favorite.findById(
-      req.params.id
-    );
-    if (!favorite) {
-      res.status(400);
-      throw new Error("Favorite not found");
+    const favorite = await Favorite.find({
+      name: req.params.name,
+    });
+    if (!favorite[0]) {
+      res.status(200).json({ name: "" });
     }
-    const updated =
-      await Favorite.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        {
-          new: true,
-        }
-      );
-    res.status(200).json(updated);
+    res.status(200).json(favorite);
   }
 );
 // DELETE favorites
 const deleteFavorite = asyncHandler(
   async (req, res) => {
-    const favorite = await Favorite.findById(
-      req.params.id
-    );
-    if (!favorite) {
+    const deleted =
+      await Favorite.findOneAndDelete({
+        name: req.params.name,
+      });
+    if (!deleted) {
       res.status(400);
       throw new Error("Favorite not found");
     }
-    await favorite.remove();
-    res.status(200).json({ id: req.params.id });
+
+    res
+      .status(200)
+      .json({ name: req.params.name });
   }
 );
 module.exports = {
   getFavorites,
   setFavorite,
-  updateFavorite,
+  getOneFavorite,
   deleteFavorite,
 };

@@ -5,6 +5,13 @@ h1 {
   text-align: center;
 }
 
+.favorites {
+  display: flex;
+  justify-content: space-around;
+  width: 80%;
+  margin: auto;
+}
+
 .link {
   color: black;
   font-size: 25px;
@@ -39,11 +46,20 @@ h1 {
   margin: 40px 60px;
 }
 .heading {
-  background-color: #ccc;
-
+  background-image: url("../public/cover.jpg");
+  background-clip: content-box;
+  background-size: cover;
   width: 100%;
 }
-
+.heading button {
+  background-color: blue;
+  font-weight: 600;
+  color: #fff;
+}
+.heading button:hover {
+  background-color: blue;
+  border-color: #fff;
+}
 .heading div {
   padding: 100px;
 }

@@ -1,13 +1,16 @@
 const mongoose = require("mongoose");
 
-const favoriteSchema = mongoose.Schema(
+const noteSchema = mongoose.Schema(
   {
     name: {
       type: String,
       required: [true, "Please add a name"],
       unique: [true, "Favorite already exists"],
     },
-    image: String,
+    note: {
+      type: String,
+      required: [true, "Enter note"],
+    },
   },
   {
     timestamps: true,
@@ -15,6 +18,6 @@ const favoriteSchema = mongoose.Schema(
 );
 
 module.exports = mongoose.model(
-  "Favorite",
-  favoriteSchema
+  "Note",
+  noteSchema
 );
